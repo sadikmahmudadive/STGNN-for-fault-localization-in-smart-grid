@@ -95,15 +95,58 @@ main contributions are:
 \section{Related Work}
 \label{sec:related}
 % ============================================================
-Prior work spans rule-based relays, shallow ML, and deep learning. Impedance/threshold
-methods are interpretable but depend on accurate parameters \cite{chen2020,liao2021}.
-CNNs reduce feature engineering but assume an ordered Euclidean input and can be
-sensitive to bus indexing \cite{owerko2020}. GNNs better match the topology by
-aggregating along connections \cite{kipf2017} and have been used for grid diagnosis and
-related tasks \cite{chen2020,donon2019,james2020}. Many prior approaches, however, focus
-on static snapshots; fault signatures are spatiotemporal. Motivated by spatiotemporal
-graph modeling \cite{yu2018}, we combine graph message passing with temporal sequence
-modeling for bus-level fault localization.
+
+\subsection{Traditional and Shallow Learning Methods}
+Traditional fault-detection pipelines relied on impedance relays, threshold rules, and
+related signal-processing logic. These methods are fast and interpretable, but their
+accuracy depends on accurate line parameters, relay settings, and stable operating
+assumptions. In renewable-rich grids, those assumptions are less reliable because inverter
+behavior, topology changes, and bidirectional power flow can alter fault signatures. Liao
+et al. \cite{liao2021} and Chen et al. \cite{chen2020} both note that data-driven fault
+diagnosis becomes attractive when fixed rules are no longer flexible enough.
+
+As PMU data became more available, shallow classifiers such as SVMs, random forests,
+decision trees, and shallow ANNs were adopted for fault-type classification and coarse
+localization. These models can learn nonlinear boundaries, but they still depend heavily on
+handcrafted features and often ignore the physical topology of the grid. For bus-level fault
+localization, that limitation is serious because electrically close buses may appear unrelated
+in a plain feature vector.
+
+\subsection{Deep Learning for Fault Diagnosis}
+CNN-based approaches reduce feature engineering by learning directly from waveform or
+feature-map inputs, but they still assume an ordered Euclidean layout and can be sensitive
+to bus indexing \cite{owerko2020}. Recurrent models, especially LSTMs, capture temporal
+evolution effectively \cite{hochreiter1997}, which makes them useful for fault transients.
+However, a pure temporal model does not explicitly represent electrical connectivity, so it
+can miss the spatial relationships needed for bus-level localization.
+
+\subsection{Graph Neural Networks in Power Systems}
+GNNs address this mismatch by learning directly on the bus-line graph. Kipf and Welling
+\cite{kipf2017} provided the graph-convolutional foundation used in many later power-system
+studies. Chen et al. \cite{chen2020}, Donon et al. \cite{donon2019}, and James et al.
+\cite{james2020} showed that topology-aware learning improves diagnosis and localization
+performance in power networks. These results suggest that the grid topology itself should
+be part of the model, not just the input feature set.
+
+The advantage of GNNs is physical consistency. If the graph representation is constructed
+correctly, the model learns from electrical neighborhoods instead of relying on arbitrary bus
+indexing. GNNs also scale well for sparse networks, since real power grids have far fewer
+lines than all possible bus-to-bus connections. The main limitation is that many GNN-based
+approaches still use static snapshots, which may not capture enough information to
+distinguish the true fault location when neighboring buses experience similar disturbances.
+
+\subsection{Spatiotemporal Learning and Research Gap}
+Spatiotemporal graph models combine graph-based spatial aggregation with temporal
+sequence modeling. Yu et al. \cite{yu2018} demonstrated this idea in sequence prediction by
+learning both network structure and temporal dynamics. For fault localization, the same
+principle is especially relevant because the most discriminative evidence often appears in
+the first few cycles after fault inception.
+
+Still, many existing studies remain snapshot-based or focus on classification rather than
+bus-level localization. Robustness under measurement noise, topology changes, and class
+imbalance is also reported inconsistently. These gaps motivate the ST-GNN design used in
+this paper, which combines graph message passing with temporal modeling for joint fault
+location and fault-type prediction.
 
 % ============================================================
 \section{System Model and Problem Formulation}
