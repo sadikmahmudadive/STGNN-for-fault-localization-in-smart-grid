@@ -1,5 +1,5 @@
 Model,CV Acc,Test Acc,Params
-Random Forest (tuned),100.0,100.0,"{'n_estimators': 200, 'max_depth': None, 'min_samples_leaf': 1}"
-Linear SVM (tuned),100.0,100.0,{'C': 0.5}
-MLP (tuned),99.6,100.0,"{'hidden_layer_sizes': (256, 128), 'alpha': 0.0001, 'learning_rate_init': 0.001}"
-ST-GNN (current run),,94.22,from training cell
+Random Forest (tuned),99.12,99.34,"{'n_estimators': 300, 'max_depth': 40, 'min_samples_leaf': 1}"
+Linear SVM (tuned),92.43,99.34,{'C': 0.5}
+ST-GNN (current run),,98.78,from training cell
+MLP (tuned),98.78,98.75,"{'hidden_layer_sizes': (128, 64), 'alpha': 0.0001, 'learning_rate_init': 0.001}"
