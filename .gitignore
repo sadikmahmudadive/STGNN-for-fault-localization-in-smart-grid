@@ -43,3 +43,9 @@ Thumbs.db
 
 # LaTeX compiled output PDF (keep source .tex)
 draft_paper.pdf
+
+# Paper and report files
+/Reports/
+/draft_paper.tex
+/literature_review.tex
+/main.txt
